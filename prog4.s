@@ -34,13 +34,16 @@ keystr	.req r6
 		cmp count, #26
 		bge done
 		
-		add r2, count, #97	// count + 'a'
+		add r2, count, #97	// count + 'a', i.e. the next letter
 		str r2, [alphab, count]
 			
 		add count, count, #1
 		b forLoop1
 	done:
-
+	
+	mov r2, #0
+	str r2, [alphab, #26] //Null terminate alphabet string
+	mov r0, alphab
 	add sp, sp, #54
         pop  {r4, r5, r6, pc}
 .encode:
