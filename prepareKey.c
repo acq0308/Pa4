@@ -16,10 +16,11 @@ int main(int argc, char *argv[])
 
 	for (i = 0; i < 26; i++)
 	{
-		key[i] = i + 'a';
+		alphabet[i] = i + 'a';
 	}
 	alphabet[26] = '\0';
 
+	printf("alphabet: %stest\n", alphabet);
 	for (i = 0; argv[1][i] != '\0'; i++)
 	{
 		if ((argv[1][i] <= 'z' && argv[1][i] >= 'a') && alphabet[argv[1][i] - 'a'] != ' ') //Is the letter a lowercase number, and is it unused?
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
 			j++;
 		}
 	}
+	printf("alphabet: %stest\n", alphabet);
 	for (i = 0; i < 26; i++)
 	{
 		if (alphabet[i] != ' ')
@@ -37,7 +39,8 @@ int main(int argc, char *argv[])
 			j++;
 		}
 	}
+	key[26] = '\0';
 
-	printf("key: %s\n", key);
+	printf("key: %stest\n", key);
 	return 0;
 }
