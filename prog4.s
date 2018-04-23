@@ -16,16 +16,15 @@ keystr	.req r6
 	.file   "prog4.s"
         .text
         .align  2
-        .global main
 	.global prepareKey, encode, decode
 	.type   prepareKey, %function
         .type   encode, %function
         .type   decode, %function
-
-.prepareKey:
+prepareKey:
+	.fnstart
 	push {r4, r5, r6, lr}        	
         sub sp, sp, #54			// make space for two arrays of 27 chars
-	ldr alphab, sp			// one array in r5 (alphabet)
+	mov alphab, sp			// one array in r5 (alphabet)
 	add keystr, sp, #27		// second array in r6 (keystring)
 	mov count, #0
         ldr r1, [r0]			// store dereference key into r1
@@ -46,6 +45,7 @@ keystr	.req r6
 	mov r0, alphab
 	add sp, sp, #54
         pop  {r4, r5, r6, pc}
+	.fnend
 .encode:
 	
 
