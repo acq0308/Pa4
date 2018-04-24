@@ -6,6 +6,6 @@ extern char * prepareKey(char* key);
 
 int main()
 {
-	printf("alphabet: %s", prepareKey("hello"));
+	printf("alphabet in debug.c: %s\n", prepareKey("hello"));
 	return 0;
 }
