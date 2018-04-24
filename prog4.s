@@ -61,8 +61,7 @@ prepareKey:
       ldrb r4, [alphab, r4]      // Find the right entry in alphab
       cmp r4, #0                 // If entry is null, letter already used
         trueUsed:                // What to do if entry is unused
-          ldr r5
-          b doneUsed
+          b doneUsed             // This is what I'm working on, look at line 26 in prepareKey.c
 
         falseUsed:               // What to do if entry is used
 
