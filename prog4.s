@@ -24,7 +24,7 @@ unSeen  .req r7
 
 prepareKey:
 	.fnstart
-	push {r4, r5, r6, lr}        	
+	push {r4-r12, lr}        	
         sub sp, sp, #54			     // make space for two arrays of 27 chars
 	mov alphab, sp			     // one array in r5 (alphabet)
 	add keystr, sp, #27		     // second array in r6 (keystring)
@@ -51,7 +51,7 @@ prepareKey:
   
  	forLoop2:
 
-    	ldrb r3, [key, count]                // Store current letter in r3
+    	ldrb r3, [key, r2]                // Store current letter in r3
       cmp r3, #0                        
       beq forLoop2Done                     // If current letter is null, we've read the whole string
 
@@ -61,15 +61,15 @@ prepareKey:
     	cmp r3, #'z'                         // Is r3 below 'z'?
     	bgt falseLower                       // If not, it's not a letter
 
-      	sub r7, r3, #'a'                   // get the corresponding location in alphab for the current letter
-      	ldrb r7, [alphab, r7]                // Find the right entry in alphab
+      	sub r9, r3, #'a'                   // get the corresponding location in alphab for the current letter
+      	ldrb r7, [alphab, r9]                // Find the right entry in alphab
       	cmp r7, #' '                       // If entry is space, letter already used
         beq doneIfLower
 
           strb r3, [keystr, count]           // Store the character into keystr[j]
           add count, count, #1               // increment count
           mov r8, #' '                       // load space into r8
-          strb r8, [alphab, r7]              // mark character as used
+          strb r8, [alphab, r9]              // mark character as used
           b doneIfLower
           
     	falseLower:
@@ -109,13 +109,10 @@ prepareKey:
       b forLoop4
     forLoop4Done:
 
-  ldr r0, =fmt_str
-  mov r1, keystr
-  bl printf
   mov r0, #0
   returnPK:
 	add sp, sp, #54
-  	pop  {r4, r5, r6, pc}
+  	pop  {r4-r12, pc}
 	.fnend
 
 
@@ -127,10 +124,4 @@ prepareKey:
 .decode:
   
 
-fmt_str:
-  .ascii "keystr: %s\n\0"
 
-
-
-break_str:
-  .ascii "failure\n"
