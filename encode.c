@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
  
-char* encode(char* str) 
+char* encode(char * str, char const* key, char *encryp) 
 {
    int count = 0;
  
@@ -12,7 +12,7 @@ char* encode(char* str)
    return (str);
 }
  
-void main() 
+int main() 
 {
    char *str;
  
@@ -21,6 +21,6 @@ void main()
  
    str = encode(str);
    printf("\nEncoded String : %s", str);
-
+   return 0;
 }
 
