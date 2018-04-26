@@ -2,13 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern char * prepareKey(char* key);
+char * prepareKey(char* key);
+void decode(char * str, char * key, char * dec);
 
 int main(int argc, char *argv[])
 {
   char key[100];
-  strcpy(key, (argc == 2) ? argv[1] : "testkeyword");
+  char message[] = "attack at dawn";
+  char output[100];
+  strcpy(key, (argc == 2) ? argv[1] : "trailblazers");
   prepareKey(key);
-	printf("key in debug.c: %s\n", key);
+	printf("key: %s\n", key);
+  printf("message: %s\n", message);
+  //encode(message, key, output)
+  strcpy(output, "tpptad tp itvh");
+  printf("encoded: %s\n", output);
+  strcpy(message, output);
+  decode(message, key, output);
+  printf("decoded: %s\n", output);
+  
 	return 0;
 }
