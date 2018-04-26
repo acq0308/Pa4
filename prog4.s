@@ -46,36 +46,74 @@ prepareKey:
 	strb r2, [alphab, #26]               // Null terminate alphabet string
 
                                              // Create the key in keystr
-        mov count, #0                        // Count through key until null character
-  	mov r2, #0
+  mov count, #0                        // count is index on keystr (j)
+ 	mov r2, #0                           // r2 is index on keyword   (i)
   
  	forLoop2:
+
     	ldrb r3, [key, count]                // Store current letter in r3
+      cmp r3, #0                        
+      beq forLoop2Done                     // If current letter is null, we've read the whole string
+
                                              // Is r3 a lowercase letter?
     	cmp r3, #'a'                         // Is r3 above 'a'?
     	blt falseLower                       // If not, it's not a letter
     	cmp r3, #'z'                         // Is r3 below 'z'?
     	bgt falseLower                       // If not, it's not a letter
 
-    	trueLower:                           // r3 is a lowercase letter
-                                             // Is r3 already used in the key?
-      	sub r4, r3, #'a'
-      	ldrb r4, [alphab, r4]                // Find the right entry in alphab
-      	cmp r4, #0                           // If entry is null, letter already used
-        trueUsed:                            // What to do if entry is unused
-        b doneUsed                           // This is what I'm working on, look at line 26 in prepareKey.c
+      	sub r7, r3, #'a'                   // get the corresponding location in alphab for the current letter
+      	ldrb r7, [alphab, r7]                // Find the right entry in alphab
+      	cmp r7, #' '                       // If entry is space, letter already used
+        beq doneIfLower
 
-        falseUsed:                           // What to do if entry is used
-        mov r7, #32
-        cmp 
-
-        doneUsed:
-      	b doneIfLower
-    
+          strb r3, [keystr, count]           // Store the character into keystr[j]
+          add count, count, #1               // increment count
+          mov r8, #' '                       // load space into r8
+          strb r8, [alphab, r7]              // mark character as used
+          b doneIfLower
+          
     	falseLower:
+        mov r0, #1
+        b returnPK
 
     	doneIfLower:
 
+      add r2, r2, #1
+      b forLoop2
+      forLoop2Done:
+    
+    mov r2, #0 // reset i to 0
+    forLoop3:
+      cmp r2, #26                            // for i from 0 to 25
+      bge forLoop3Done                       // if i is 26 or above, exit loop
+      ldrb r3, [alphab, r2]                  // load ith entry in alphab
+      cmp r3, #' '                           // check if it's used
+      beq forLoop3Continue                   // if it is, skip to the next letter
+      strb r3, [keystr, count]               // store the current letter into keystr
+      add count, count, #1                   // increment count (keystr index)
+
+      forLoop3Continue:
+      add r2, r2, #1
+      b forLoop3
+    forLoop3Done:
+    mov r3, #0                            // store null into r3
+    strb r3, [keystr, #26]                   // null terminate keystr
+
+    mov r2, #0 // reset i to 0
+    forLoop4:
+      cmp r2, #27                            // for i from 0 to 26 (iterate over keystr)
+      bge forLoop4Done
+      ldrb r3, [keystr, r2]                  // load keystr[i]
+      strb r3, [key, r2]                     // store into key[i]
+      add r2, r2, #1
+      b forLoop4
+    forLoop4Done:
+
+  ldr r0, =fmt_str
+  mov r1, keystr
+  bl printf
+  mov r0, #0
+  returnPK:
 	add sp, sp, #54
   	pop  {r4, r5, r6, pc}
 	.fnend
@@ -89,4 +127,10 @@ prepareKey:
 .decode:
   
 
+fmt_str:
+  .ascii "keystr: %s\n\0"
 
+
+
+break_str:
+  .ascii "failure\n"
