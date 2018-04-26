@@ -1,7 +1,7 @@
 @ Austin Queen & Andre Robinson
-@ austinq
+@ austinq & andre3
 @ Program 4 
-@ This program
+@ This program encodes data using a word or alphabetic string as its key
 @ Rose Lowe
 @ Due: Wednesday, April 25th
 
@@ -70,7 +70,7 @@ prepareKey:
           b doneIfLower
           
       falseLower:
-        mov r0, #1
+        mov r0, #0                    // if there is an invalid character in key, return 0
         b returnPK
 
       doneIfLower:
@@ -106,7 +106,7 @@ prepareKey:
       b forLoop4
     forLoop4Done:
 
-  mov r0, #0                          // return false by default
+  mov r0, #1                          // return true by default
   returnPK:
   add sp, sp, #54
     pop  {r4-r12, pc}

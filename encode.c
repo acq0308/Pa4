@@ -22,21 +22,14 @@ char* encode(char * str, char const* key, char *encryp)
    {
      if(str[count] >= 'a' && str[count] <= 'z')
      {
-       str[count] -= 'a';
+       encryp[count] = key[str[count] - 'a'];
      }
-   return (str);
+     else
+     {
+       encryp[count] = str[count];
+     }
    } 
+   encryp[count] = '\0';
+   return (encryp);
 }
  
-int main() 
-{
-   char *str;
- 
-   printf("\nEnter the String to be Encode : ");
-   scanf("%s", str);
- 
-   str = encode(str);
-   printf("\nEncoded String : %s", str);
-   return 0;
-}
-

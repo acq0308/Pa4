@@ -4,6 +4,8 @@
 
 char * prepareKey(char* key);
 void decode(char * str, char * key, char * dec);
+void encode(char * str, char * key, char * dec);
+
 
 int main(int argc, char *argv[])
 {
@@ -14,8 +16,7 @@ int main(int argc, char *argv[])
   prepareKey(key);
 	printf("key: %s\n", key);
   printf("message: %s\n", message);
-  //encode(message, key, output)
-  strcpy(output, "tpptad tp itvh");
+  encode(message, key, output);
   printf("encoded: %s\n", output);
   strcpy(message, output);
   decode(message, key, output);
