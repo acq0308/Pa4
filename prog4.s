@@ -118,12 +118,59 @@ prepareKey:
 .unreq  keystr
 
 
-.encode:
+string  .req r0                       // string to encode
+key     .req r1                       // key to encode with
+encryp  .req r2                       // where to store encoded string
+iter1   .req r3                       // iterator
+iter2   .req r4                       // iterator
+strbuf  .req r5                       // holds character from string
+keybuf  .req r6                       // holds character from key
+
+encode:
   .fnstart
   push {r0-r8, lr}
+
+  mov iter1, #0 //Initialize variables
+  mov iter2, #0
+  mov strbuf, #0
+  mov keybuf, #0
+
+  efor1:
+    ldrb strbuf, [string, iter1]      // load next letter
+    cmp strbuf, #0                    // check if null
+    beq efor1break
+
+    cmp strbuf, #'a'                  // check if character is between 'a' and 'z'
+    blt efor1notLower
+    cmp strbuf, #'z'
+    bgt efor1notLower
+    
+    sub iter2, strbuf, #'a'           // get index
+    ldrb keybuf, [key, iter2]         // load char from key
+    strb keybuf, [encryp, iter1]      // store into encryp
+    b efor1continue
+
+    efor1notLower:
+      strb strbuf, [encryp, iter1]    // if the char is not a-z, no processing required
+                                      // just store it as-is into encryp
+    efor1continue:
+      add iter1, iter1, #1
+      b efor1
+
+  efor1break:
+    strb strbuf, [encryp, iter1]      // null terminate string
+  
+  mov r0, encryp                      // return encryp
   pop {r0-r8, pc}
   .fnend
 
+.unreq string
+.unreq key
+.unreq encryp
+.unreq iter1
+.unreq iter2
+.unreq strbuf
+.unreq keybuf
 
 instr   .req r0                       // string to decode
 key     .req r1                       // the key to decode with
