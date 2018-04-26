@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int isAlphaLower(char);
-char decodeSingleChar(char, char*);
+//int isAlphaLower(char);
+//char decodeSingleChar(char, char*);
 void decode(char *str, char *key, char *decode);
 
 
@@ -12,14 +12,14 @@ int main()
   char key[] = "trailbzescdfghjkmnopquvwxy";
   char decoded[40] = "";
 
+  printf("encoded: %s\n", encoded);
   decode(encoded, key, decoded);
 
-  printf("encoded: %s\n", encoded);
   printf("decoded: %s\n", decoded);
 }
 
 
-void decode(char *str, char *key, char *decode)
+/*void decode(char *str, char *key, char *decode)
 {
   int i;
 
@@ -51,4 +51,4 @@ char decodeSingleChar(char c, char *key)
 
   i += 'a';
   return i;
-}
+}*/
